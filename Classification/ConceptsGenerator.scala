@@ -10,7 +10,7 @@ import org.semanticweb.owlapi.model.OWLClassExpression
 import org.semanticweb.owlapi.model.OWLDataFactory
 import org.semanticweb.owlapi.model.OWLIndividual
 import org.semanticweb.owlapi.model.OWLNamedIndividual
-import net.sansa_stack.ml.spark.classification.KB.KB
+import net.sansa_stack.ml.spark.classification.KB
 
 object ConceptsGenerator{
   class ConceptsGenerator(protected var kb: KB) {
@@ -45,7 +45,6 @@ object ConceptsGenerator{
   
           //take the first subConcept for builiding the query OWLClassExpression
           partialConcept = kb.getRandomConcept
-          //println("partial concept" + partialConcept)
           j = 1
                    
           while (j < numOfSubConcepts) {
@@ -61,7 +60,7 @@ object ConceptsGenerator{
               else dataFactory.getOWLObjectUnionOf(newConcepts) 
             j+=1
           } // for j
-          
+          //println("\n", partialConcept)
           println()
           complPartialConcept = dataFactory.getOWLObjectComplementOf(partialConcept)
           //println("\n", complPartialConcept)
@@ -72,7 +71,9 @@ object ConceptsGenerator{
           println ("\n pos: " + numPosInst + ",  neg: " + numNegInst + ",    und: " + (nEx - numNegInst - numPosInst))
           println()
 
-        } while ((numPosInst < 20) || (numNegInst >3))     
+        } while (numPosInst+numNegInst == 0 || numPosInst+numNegInst == nEx)
+            //(numPosInst*numNegInst == 0)||((numPosInst<10)||(numNegInst<10)))
+            //(numPosInst < 20) || (numNegInst >3))     
   // ((numPosInst < 10) || (numNegInst > 10))
   //         (numPosInst * numNegInst == 0) 
         //add the newly built OWLClassExpression to the list of all required query concepts

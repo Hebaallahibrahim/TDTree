@@ -18,7 +18,7 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.{SparkConf, SparkContext}
 
 import net.sansa_stack.ml.spark.classification._
-import net.sansa_stack.ml.spark.classification.KB.KB
+//import net.sansa_stack.ml.spark.classification.KB
 import net.sansa_stack.ml.spark.classification.TDTClassifiers.TDTClassifiers
 
 /*
@@ -26,7 +26,7 @@ import net.sansa_stack.ml.spark.classification.TDTClassifiers.TDTClassifiers
  */
 
 object TDTInducer {
-    var stream: PrintStream = _
+   // var stream: PrintStream = _
     
 class TDTInducer(var kb: KB, var nConcepts: Int, var sc: SparkSession) extends Serializable{
 
@@ -85,20 +85,22 @@ class TDTInducer(var kb: KB, var nConcepts: Int, var sc: SparkSession) extends S
    * Function for splitting the training examples into positive, negative and undefined examples
    */
   
-  def splitting(trainingExs: RDD[OWLIndividual], classifications: RDD[((OWLClassExpression, OWLIndividual), Int)], c: OWLClassExpression): 
-                                                                                                                (RDD[String],RDD[String],RDD[String]) = {
+  def splitting(trainingExs: RDD[OWLIndividual], 
+                classifications: RDD[((OWLClassExpression, OWLIndividual), Int)], 
+                c: OWLClassExpression): (RDD[String],RDD[String],RDD[String]) = {
+
+    pos = classifications.filter((c,_)._2 == +1).map(_._1._2.toString()).cache()
+    neg = classifications.filter((c,_)._2 == -1).map(_._1._2.toString()).cache()
+    und = classifications.filter((c,_)._2 == 0).map(_._1._2.toString())
+    (pos, neg, und)
+  }
     
 //    var BINARYCLASSIFICATION : Boolean = false
 
     //val ppos = classifications.filter(x => x._2 == +1).cache()
     //ppos.take(50).foreach(println(_))
-    
-    pos = classifications.filter(_._2 == +1).map(_._1._2.toString()).cache()
-    neg = classifications.filter(_._2 == -1).map(_._1._2.toString()).cache()
-    und = classifications.filter(_._2 == 0).map(_._1._2.toString())
-    (pos, neg, und)
-    
-//    if (pos.count.toInt == 0){
+  
+  //    if (pos.count.toInt == 0){
 //      if (!BINARYCLASSIFICATION) {
 //        neg = classifications.filter(_._2 == -1).map(_._1._2.toString()).cache()
 //      }
@@ -106,11 +108,7 @@ class TDTInducer(var kb: KB, var nConcepts: Int, var sc: SparkSession) extends S
 //    else{
 //      und = classifications.filter(_._2 == 0).map(_._1._2.toString())
 //    }
-  
-
-  } 
-
-  
+   
   //    var pos = new ArrayList[String]()
 //    var neg = new ArrayList[String]()
 //    var und = new ArrayList[String]()

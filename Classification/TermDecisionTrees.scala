@@ -6,7 +6,7 @@ import scala.collection.JavaConverters._
 import org.semanticweb.owlapi.model.OWLClassExpression
 import org.semanticweb.owlapi.model.OWLIndividual
 
-import net.sansa_stack.ml.spark.classification.KB.KB
+//import net.sansa_stack.ml.spark.classification.KB.KB
 import net.sansa_stack.ml.spark.classification.ClassMembership.ClassMembership
 import net.sansa_stack.ml.spark.classification.TDTClassifiers.TDTClassifiers
 

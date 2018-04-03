@@ -34,17 +34,14 @@ import org.apache.spark.sql.SparkSession
 import net.sansa_stack.owl.spark.rdd.OWLAxiomsRDD
 
 
-object KB extends App{
-  
-  val d: Double = 0.3
-  var generator: Random = new Random(2)
-  
-   /*
-		 * The class to define the Knowledgebase elements
-		 */
  @SerialVersionUID(100L)
   class KB(var UrlOwlFile: String, rdd: OWLAxiomsRDD, sparkSession: SparkSession) extends Serializable {
   
+  
+    var Url = UrlOwlFile
+    var r = rdd
+    var s = sparkSession
+    
     var ontology: OWLOntology = initKB()
     var reasoner: OWLReasoner = _
     var hermit: Reasoner = _
@@ -64,27 +61,9 @@ object KB extends App{
     var choiceDataP: Random = new Random(1)
     var choiceObjectP: Random = new Random(1)
 
-  def KB(){
-      var ontology: OWLOntology = null
-      var reasoner: OWLReasoner = null
-      var hermit: Reasoner = null
-      var manager: OWLOntologyManager = null
-      var Concepts: RDD[OWLClass] = null
-      var Roles: RDD[OWLObjectProperty] = null
-      var dataFactory: OWLDataFactory = null
-      var Examples: RDD[OWLIndividual] = null
-  
-      //  Date property: property, values and domains
-      var dataPropertiesValue: RDD[RDD[OWLLiteral]] = null
-      var Properties: RDD[OWLDataProperty] = null
-      var domain: Array[Array[OWLIndividual]] = null
-      //var classifications: Array[Array[Int]] = null
-      var classifications: RDD[((OWLClassExpression, OWLIndividual), Int)]= null
-      var newEle: ((OWLClassExpression, OWLIndividual), Int) = null
-      var choiceDataP: Random = new Random(1)
-      var choiceObjectP: Random = new Random(1)
-      val d: Double = 0.3
-      var generator: Random = new Random(2)
+    def this() = {
+      this("" , null, null)
+      hermit = new Reasoner(null,  null)
     }
     
 //    class KB(url: String) {
@@ -111,7 +90,7 @@ object KB extends App{
       dataFactory = manager.getOWLDataFactory
       
       // Reasoner configuration
-      var con: Configuration = new Configuration() with Serializable
+      var con: Configuration = new Configuration() 
 //      var reasonerFactory: OWLReasonerFactory = new StructuralReasonerFactory() with Serializable
 //      reasoner = reasonerFactory.createReasoner(ontology)
         
@@ -183,9 +162,8 @@ object KB extends App{
       println("\nClassifying all examples \n ------------ ")
       
       var flag: Boolean = false
-      //classifications = Array.ofDim[Int](testConcepts.size, examples.count.toInt)
+      //classifications = Array.ofDim[Int](testConcepts.size, examples.count.toInt, )
       println("Processed concepts (" + testConcepts.size + "): \n")
-      
 
       for (c <- 0 until testConcepts.size) {
         var p: Int = 0
@@ -193,10 +171,10 @@ object KB extends App{
         println("\nTest Concept number " + (c+1) + ": " + testConcepts(c))
   
         var c1 = examples.map{ x => (testConcepts(c),x)}
-        //c1.foreach(println(_))
+        //c1.take(20).foreach(println(_))
         
         var newEle1 = c1.map{x => (x, 0)}
-        //newEle1.foreach(println(_))
+        //newEle1.take(20).foreach(println(_))
         var c2 = newEle1.mapPartitions{data => data.map{ele => 
           if (getReasoner.isEntailed(getDataFactory.getOWLClassAssertionAxiom(testConcepts(c), ele._1._2))){
             newEle = (ele._1, +1)
@@ -222,8 +200,7 @@ object KB extends App{
       //classifications.take(10).foreach(println(_))
       classifications
     }
-
-        
+    
 //        var c2 =  newEle1.map { ele => 
 //          //var newEle: ((OWLClassExpression, OWLIndividual), Int) = (ele, 0)
 //          if (r.isEntailed(getDataFactory.getOWLClassAssertionAxiom(testConcepts(c), ele._1._2))){
@@ -245,13 +222,13 @@ object KB extends App{
 //         newEle  
 //       }   
     
-    //    def getClassMembershipResult(testConcepts: Array[OWLClassExpression], negTestConcepts: Array[OWLClassExpression],
+//   def getClassMembershipResult(testConcepts: Array[OWLClassExpression], negTestConcepts: Array[OWLClassExpression],
 //                                 examples: RDD[OWLIndividual]): Array[Array[Int]] = {
 //
 //      println("\nClassifying all examples \n ------------ ")
 //      
 //      var flag: Boolean = false
-//      classifications = Array.ofDim[Int](testConcepts.size, examples.count.toInt)
+//      //classifications = Array.ofDim[Int](testConcepts.size, examples.count.toInt)
 //      println("Processed concepts (" + testConcepts.size + "): \n")
 //      val r: Reasoner = getReasoner
 //      
@@ -286,7 +263,7 @@ object KB extends App{
 //      
 //      classifications
 //    }
-      
+//      
 
     def setClassMembershipResult(classifications: RDD[((OWLClassExpression, OWLIndividual), Int)]): Unit = {
       this.classifications = classifications
@@ -300,8 +277,8 @@ object KB extends App{
 
       println("\nVerifyng all individuals' relationship ------ ")
 
-      val x = rols.count.asInstanceOf[Int]
-      val y = examples.count.asInstanceOf[Int]
+      val x = rols.count.toInt
+      val y = examples.count.toInt
 
       val Related: Array[Array[Array[Int]]] = Array.ofDim[Int](x, y, y)
       var RelatedRole = sparkSession.sparkContext.parallelize(Related)
@@ -480,4 +457,4 @@ object KB extends App{
       statements
     }*/
   }
-}
+
