@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring accessors="true" comment="Delete element from project &apos;sansa-ml-spark_2.11&apos;&#x0A;- Original project: &apos;sansa-ml-spark_2.11&apos;&#x0A;- Original element: &apos;sansa-ml-spark_2.11/src/main/scala/net.sansa_stack.ml.spark.classification.evaluation&apos;" description="Delete element" element1="/src\/main\/scala&lt;net.sansa_stack.ml.spark.classification.evaluation" elements="1" flags="589830" id="org.eclipse.jdt.ui.delete" resources="0" stamp="1518115869867" subPackages="false" version="1.0"/>
+</session>

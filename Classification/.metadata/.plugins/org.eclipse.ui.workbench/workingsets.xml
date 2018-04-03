@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workingSetManager>
+<workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1511865990856_1" label="sansa-ml-parent_2.11" name="sansa-ml-parent_2.11">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/sansa-ml-common_2.11" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SANSA-ML" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/sansa-ml-tests_2.11" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/sansa-ml-flink_2.11" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/sansa-ml-spark_2.11" type="4"/>
+</workingSet>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1511865966028_0" label="Window Working Set" name="Aggregate for window 1511865966028"/>
+</workingSetManager>
