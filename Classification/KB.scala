@@ -197,7 +197,7 @@ import net.sansa_stack.owl.spark.rdd.OWLAxiomsRDD
 
         classifications = c2
      }
-      //classifications.take(10).foreach(println(_))
+      classifications.take(10).foreach(println(_))
       classifications
     }
     
